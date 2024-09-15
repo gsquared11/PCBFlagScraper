@@ -46,7 +46,7 @@ def check_flag_status():
         return "Error"
 
 @app.function_name(name="flag_status_timer")
-@app.schedule(schedule="0 */1 * * * *", arg_name="timer", run_on_startup=True, use_monitor=True)
+@app.schedule(schedule="0 0 */4 * * *", arg_name="timer", run_on_startup=True, use_monitor=True)
 @app.generic_output_binding(
     arg_name="flagData", 
     type="sql", 
