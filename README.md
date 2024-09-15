@@ -1,4 +1,5 @@
 # PCB Flag Status Tracker - Azure Python Function App
+Current Azure App: https://pcbflagscraper.azurewebsites.net/api/flag_status
 
 This Python-based Azure Function App scrapes the Visit Panama City Beach website (https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/) to check and return the current beach flag status. I'm planning to record this data in a SQL database to try and
 identify any trends that may be interesting regarding surf, safety, or other marine conditions!
