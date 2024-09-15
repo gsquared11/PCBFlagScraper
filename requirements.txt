@@ -1,3 +1,4 @@
+azure-functions
 beautifulsoup4==4.12.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
@@ -9,4 +10,3 @@ setuptools==74.1.2
 soupsieve==2.6
 urllib3==2.2.3
 zope.interface==7.0.3
-azure-functions

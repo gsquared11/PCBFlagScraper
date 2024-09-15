@@ -54,7 +54,7 @@ def check_flag_status():
     ConnectionStringSetting="SqlConnectionString", 
     data_type=DataType.STRING
 )
-def flag_status_function(req: func.HttpRequest, flagData: func.Out[func.SqlRow]) -> func.HttpResponse:
+def flag_status_function_http(req: func.HttpRequest, flagData: func.Out[func.SqlRow]) -> func.HttpResponse:
     logging.info('Flag status HTTP trigger function processed a request.')
 
     # Scrape the current flag status
