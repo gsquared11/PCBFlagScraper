@@ -45,8 +45,8 @@ def check_flag_status():
         # Return an error status if the website could not be reached
         return "Error"
 
-@app.function_name(name="flag_status_timer")
-@app.schedule(schedule="0 */1 * * * *", arg_name="timer", run_on_startup=True, use_monitor=True)
+@app.function_name(name="flag_status")
+@app.route(route="flag_status", auth_level=func.AuthLevel.ANONYMOUS)
 @app.generic_output_binding(
     arg_name="flagData", 
     type="sql", 
@@ -54,13 +54,13 @@ def check_flag_status():
     ConnectionStringSetting="SqlConnectionString", 
     data_type=DataType.STRING
 )
-def flag_status_function_timer(timer: func.TimerRequest, flagData: func.Out[func.SqlRow]) -> None:
-    logging.info('Timer trigger function executed at: %s', datetime.datetime.now())
+def flag_status_function(req: func.HttpRequest, flagData: func.Out[func.SqlRow]) -> func.HttpResponse:
+    logging.info('Flag status HTTP trigger function processed a request.')
 
     # Scrape the current flag status
     current_flag_status = check_flag_status()
 
-    # Get the current time and date in UTC
+    # Get the current time in the appropriate format
     current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # If the flag status is not an error, prepare the SQL output
@@ -71,7 +71,8 @@ def flag_status_function_timer(timer: func.TimerRequest, flagData: func.Out[func
             "date_time": current_time
         }))
         
-        logging.info(f"Flag status: {current_flag_status} detected at {current_time}")
+        # Return a successful HTTP response
+        return func.HttpResponse(f"Flag status: {current_flag_status} detected at {current_time}", status_code=200)
     else:
-        # Log the error in fetching the flag status
-        logging.error("Error fetching the flag status.")
+        # If there's an error in fetching the flag status, return an error response
+        return func.HttpResponse(f"Error fetching the flag status.", status_code=500)
