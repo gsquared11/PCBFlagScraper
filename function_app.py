@@ -8,7 +8,7 @@ def check_flag_status():
     # URLs of the flag images
     website_url = "https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/"
     purple_flag_url = "https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_44,q_75,w_58/v1/clients/panamacitybeach/purple_7003bf68-3a99-4a25-9042-5468e3490d60.png"
-    yellow_flag_url = "https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_80,q_75,w_110/v1/clients/panamacitybeach-redesign/yellow_weather_flag_2x_45dc6242-7cec-4a76-b6f4-ddfea9df95f6.png"
+    yellow_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_fill,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach-redesign/yellow_weather_flag_2x_45dc6242-7cec-4a76-b6f4-ddfea9df95f6.png"
     red_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_fill,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach-redesign/red_weather_flag_2x_35a37199-20cc-45fa-850e-e0d0737973ba.png"
     double_red_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_limit,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach-redesign/double_flag_fd285f87-e94a-4497-9b0e-8150f138daf2.png"
 
