@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
-# Function App instance
+# Declare function app instance
 app = func.FunctionApp()
 
 # Function to check the flag status by scraping the website
