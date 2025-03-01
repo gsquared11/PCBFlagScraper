@@ -38,7 +38,7 @@ This Azure Function App scrapes the [Visit Panama City Beach website](https://ww
 
 - **Backend**:
   - **Azure Functions**:
-    - `Timer Trigger`: Schedules the scraping every 2 hours.
+    - `Timer Trigger`: Schedules the scraping every 4 hours.
     - `SQL Output Binding`: Stores flag status and timestamp.
   - **Web Scraping**:
     - `requests`: Sends HTTP requests to the target webpage.
