@@ -26,7 +26,7 @@ This Azure Function App scrapes the [Visit Panama City Beach website](https://ww
 
 - **Function Name**: `flag_status_function_timer()`
 - **Purpose**: Triggers every 2 hours using Azure's Timer Trigger.
-- **Schedule**: Executes at the start of every 2nd hour (e.g., 12:00, 02:00, 04:00, ...).
+- **Schedule**: Executes at the start of every 4th hour (e.g., 12:00, 04:00, 08:00, ...).
 - **Functionality**:
   - Logs the execution time.
   - Calls `check_flag_status()` to get the current flag status.
