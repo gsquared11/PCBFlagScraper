@@ -1,4 +1,4 @@
-# PCB Flag Status Tracker - Azure Python Function App
+# PCB Flag Status Scraper - Azure Python Function App
 
 This Azure Function App scrapes the [Visit Panama City Beach website](https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/) to check and return the current beach flag status. The app is triggered every 2 hours, automatically recording the flag type, date, and time in a SQL database. The recorded data is then displayed on a Flask Web App hosted on Azure ([see PCB Flag Data Viewer](https://github.com/gsquared11/pcb-flag-viewer)).
 
