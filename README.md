@@ -1,6 +1,6 @@
 # PCB Flag Status Scraper - Azure Python Function App
 
-This Azure Function App scrapes the [Visit Panama City Beach website](https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/) to check and return the current beach flag status. The app is triggered every 2 hours, automatically recording the flag type, date, and time in a SQL database. The recorded data is then displayed on a Flask Web App hosted on Azure ([see PCB Flag Data Viewer](https://github.com/gsquared11/pcb-flag-viewer)).
+This Azure Function App scrapes the [Visit Panama City Beach website](https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/) to check and return the current beach flag status. The app is triggered every 4 hours, automatically recording the flag type, date, and time in a SQL database. The recorded data is then displayed on a Flask Web App hosted on Azure ([see PCB Flag Data Viewer](https://github.com/gsquared11/pcb-flag-viewer)).
 
 ![beachflags-100x100](https://github.com/user-attachments/assets/0ca109e4-1c53-40e6-9913-75414c9e284d)
 
@@ -25,8 +25,7 @@ This Azure Function App scrapes the [Visit Panama City Beach website](https://ww
 ### 2. Scheduled Timer Trigger Function
 
 - **Function Name**: `flag_status_function_timer()`
-- **Purpose**: Triggers every 2 hours using Azure's Timer Trigger.
-- **Schedule**: Executes at the start of every 2nd hour (e.g., 12:00, 02:00, 04:00, ...).
+- **Purpose**: Triggers every 4 hours using Azure's Timer Trigger.
 - **Functionality**:
   - Logs the execution time.
   - Calls `check_flag_status()` to get the current flag status.
@@ -38,7 +37,7 @@ This Azure Function App scrapes the [Visit Panama City Beach website](https://ww
 
 - **Backend**:
   - **Azure Functions**:
-    - `Timer Trigger`: Schedules the scraping every 2 hours.
+    - `Timer Trigger`: Schedules the scraping every 4 hours.
     - `SQL Output Binding`: Stores flag status and timestamp.
   - **Web Scraping**:
     - `requests`: Sends HTTP requests to the target webpage.
