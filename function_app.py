@@ -16,6 +16,7 @@ def check_flag_status():
     red_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_fill,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach-redesign/red_weather_flag_2x_35a37199-20cc-45fa-850e-e0d0737973ba.png"
     double_red_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_limit,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach-redesign/double_flag_fd285f87-e94a-4497-9b0e-8150f138daf2.png"
     red_purple_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_limit,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach/Red_and_Purple2_bffd8d4c-2bc1-4ad1-910f-90d9f11611f6.png"
+    yellow_purple_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_limit,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach/Yellow_and_Purple2_ae8edbde-66fa-4815-86ed-a1b72f519004.png"
 
     # Send a request to the website
     response = requests.get(website_url)
@@ -41,6 +42,8 @@ def check_flag_status():
                 return "Yellow Flag"
             elif red_purple_flag_url in img_url:
                 return "Red Over Purple Flag"
+            elif yellow_purple_flag_url in img_url:
+                return "Yellow Over Purple Flag"
         
         # If no flag is detected
         return "No Flag"
