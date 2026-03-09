@@ -1,55 +1,48 @@
-# PCB Flag Status Scraper - Azure Python Function App
+# PCB Flag Status Scraper
 
-This Azure Function App scrapes the [Visit Panama City Beach website](https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/) to check and return the current beach flag status. The app is triggered every 4 hours, automatically recording the flag type, date, and time in a SQL database. The recorded data is then displayed on a Flask Web App hosted on Azure ([see PCB Flag Data Viewer](https://github.com/gsquared11/pcb-flag-viewer)).
+This Azure Python Function App continually monitors the beach flag status from the [Visit Panama City Beach website](https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/). Running automatically every 4 hours, it scrapes the current flag type and logs the incident alongside a timestamp to an Azure SQL database. The collected data ultimately powers a separate frontend application ([PCB Flag Data Viewer](https://github.com/gsquared11/pcb-flag-viewer)).
 
 ![beachflags-100x100](https://github.com/user-attachments/assets/0ca109e4-1c53-40e6-9913-75414c9e284d)
 
-## Features
+## How It Works
 
-### 1. Flag Status Scraping
+An Azure Timer Trigger schedules the scraper to run at 4-hour intervals. During an execution, the app fetches the PCB website and parses its HTML to locate the active flag indicator.
 
-- **Function Name**: `check_flag_status()`
-- **Purpose**: Scrapes the [VisitPCB webpage](https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/) to identify the current beach flag status.
-- **Approach**:
-  - Sends an HTTP request to the webpage.
-  - Parses the HTML using `BeautifulSoup`.
-  - Loops through `<img>` tags to find image URLs corresponding to known flag types:
-    - **Yellow Flag**
-    - **Red Flag**
-    - **Double Red Flag**
-  - Returns the corresponding flag status:
-    - `"Double Red Flag"`, `"Red Flag"`, or `"Yellow Flag"` if a known flag is detected.
-    - `"No Flag"` if no matching flag image is found.
-    - `"Error"` if the website is inaccessible.
+The app currently recognizes the following flag conditions:
+- Yellow Flag
+- Red Flag
+- Double Red Flag
+- Red Over Purple Flag
+- Yellow Over Purple Flag
 
-### 2. Scheduled Timer Trigger Function
+When a recognized flag is found, the data is pushed to the database using an Azure SQL Output Binding. If no valid flag is identified or the site cannot be reached, the function simply logs the event and exits.
 
-- **Function Name**: `flag_status_function_timer()`
-- **Purpose**: Triggers every 4 hours using Azure's Timer Trigger.
-- **Functionality**:
-  - Logs the execution time.
-  - Calls `check_flag_status()` to get the current flag status.
-  - If no error occurs, inserts the flag status and the current timestamp into the SQL database using Azure’s SQL binding.
-  - Logs the detected flag status or any errors encountered during the scraping process.
+## Tech Stack
 
+- **Backend:** Azure Functions (Python 3.8+)
+- **Scraping:** `requests`, `BeautifulSoup4`
+- **Database:** Azure SQL Database
 
-## Technology Stack
+## Local Development
 
-- **Backend**:
-  - **Azure Functions**:
-    - `Timer Trigger`: Schedules the scraping every 4 hours.
-    - `SQL Output Binding`: Stores flag status and timestamp.
-  - **Web Scraping**:
-    - `requests`: Sends HTTP requests to the target webpage.
-    - `BeautifulSoup`: Parses HTML to extract image URLs.
-- **Database**:
-  - **Azure SQL Database**: Stores flag status and timestamps.
-- **Web Display**:
-  - **Flask Web App**: Displays the recorded data on a frontend hosted on Azure.
+To run this app locally or deploy it to Azure, you'll need the Azure Functions Core Tools installed.
 
-## Prerequisites
-
-- **Python**: 3.8 or higher
-- **Azure Functions Core Tools**: Installed and configured
-- **Azure SQL Database**: Connection string configured as `SqlConnectionString` in Azure Function App settings.
-
+1. Configure your local environment by adding your Azure SQL connection string to your `local.settings.json` file:
+   ```json
+   {
+     "IsEncrypted": false,
+     "Values": {
+       "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+       "FUNCTIONS_WORKER_RUNTIME": "python",
+       "SqlConnectionString": "<YOUR_SQL_CONNECTION_STRING>"
+     }
+   }
+   ```
+2. Install the necessary Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Start the function app locally:
+   ```bash
+   func start
+   ```
