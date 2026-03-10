@@ -41,7 +41,6 @@ def check_flag_status():
     else:
         return "Error"
 
-@app.function_name(name="flag_status_timer")
 @app.timer_trigger(schedule="0 0 */4 * * *", arg_name="timer", run_on_startup=False, use_monitor=True)
 @app.generic_output_binding(
     arg_name="flagData", 
@@ -50,7 +49,7 @@ def check_flag_status():
     ConnectionStringSetting="SqlConnectionString", 
     data_type=DataType.STRING
 )
-def flag_status_function_timer(timer: func.TimerRequest, flagData: func.Out[func.SqlRow]) -> None:
+def flag_status_timer(timer: func.TimerRequest, flagData: func.Out[func.SqlRow]) -> None:
     logging.info('Timer trigger function executed at: %s', datetime.datetime.now())
 
     current_flag_status = check_flag_status()
