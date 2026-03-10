@@ -1,5 +1,6 @@
 import azure.functions as func
 import logging
+from azure.functions.decorators.core import DataType
 import requests
 from bs4 import BeautifulSoup
 import datetime
@@ -40,13 +41,16 @@ def check_flag_status():
     else:
         return "Error"
 
-@app.timer_trigger(schedule="0 0 */4 * * *", arg_name="timer", run_on_startup=False, use_monitor=True)
-@app.sql_output(
+@app.function_name(name="flag_status_timer")
+@app.schedule(schedule="0 0 */4 * * *", arg_name="timer", run_on_startup=False, use_monitor=True)
+@app.generic_output_binding(
     arg_name="flagData", 
-    command_text="dbo.flag_data", 
-    connection_string_setting="SqlConnectionString"
+    type="sql", 
+    CommandText="dbo.flag_data", 
+    ConnectionStringSetting="SqlConnectionString", 
+    data_type=DataType.STRING
 )
-def flag_status_timer(timer: func.TimerRequest, flagData: func.Out[func.SqlRow]) -> None:
+def flag_status_function_timer(timer: func.TimerRequest, flagData: func.Out[func.SqlRow]) -> None:
     logging.info('Timer trigger function executed at: %s', datetime.datetime.now())
 
     current_flag_status = check_flag_status()
