@@ -7,6 +7,12 @@ import datetime
 
 app = func.FunctionApp()
 
+REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
 def check_flag_status():
     website_url = "https://www.visitpanamacitybeach.com/plan-your-trip/stay-pcb-current/"
     yellow_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_fill,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach-redesign/yellow_weather_flag_2x_45dc6242-7cec-4a76-b6f4-ddfea9df95f6.png"
@@ -15,7 +21,7 @@ def check_flag_status():
     red_purple_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_limit,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach/Red_and_Purple2_bffd8d4c-2bc1-4ad1-910f-90d9f11611f6.png"
     yellow_purple_flag_url = "https://assets.simpleviewinc.com/sv-panamacitybeach/image/upload/c_limit,h_80,q_75,w_110/v1/cms_resources/clients/panamacitybeach/Yellow_and_Purple2_ae8edbde-66fa-4815-86ed-a1b72f519004.png"
 
-    response = requests.get(website_url)
+    response = requests.get(website_url, headers=REQUEST_HEADERS, timeout=30)
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -23,6 +29,8 @@ def check_flag_status():
 
         for img in img_tags:
             img_url = img.get('src')
+            if not img_url:
+                continue
             if not img_url.startswith(('http://', 'https://')):
                 img_url = requests.compat.urljoin(website_url, img_url)
 
@@ -39,6 +47,7 @@ def check_flag_status():
         
         return "No Flag"
     else:
+        logging.error("Flag page returned HTTP %s", response.status_code)
         return "Error"
 
 @app.function_name(name="flag_status_timer")
@@ -65,4 +74,4 @@ def flag_status_function_timer(timer: func.TimerRequest, flagData: func.Out[func
         
         logging.info(f"Flag status: {current_flag_status} detected at {current_time}")
     else:
-        logging.error("Error fetching the flag status.")
+        raise RuntimeError("Error fetching the flag status.")
